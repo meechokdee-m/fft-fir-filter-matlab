@@ -2,20 +2,17 @@ clc;
 close all;
 clear all;
 
-%% Setting a sampling frequency and generating a noise signal
 Fs = 1000;
 t = 0:1/Fs:2;
 
 noiseAmplitude=randi(5); %Amplitudes random to 5) 
 noise=noiseAmplitude* rand(1, length(t)); %Random 5 mul with same length random number
 
-%% Generating sine waves with noise
 y1 = 5*sin(2*pi*60*t) + noise;
 y2 = 2.5*sin(2*pi*100*t) + noise; 
 y3 = 1.2*sin(2*pi*150*t)+ noise;
 y4 = 7*sin(2*pi*250*t) + noise;
 
-%% Plotting all the signals seperately
 figure(1);
 subplot(2,2,1);
 plot(t, y1, 'r');
@@ -41,7 +38,6 @@ xlabel('Time');
 ylabel('Amplitude');
 title('Signal 4');
 
-%% Summing up all signals and playing sound using sound(y, Fs) function
 y = y1 + y2 + y3 + y4;
 sound(y, Fs);
 
@@ -62,13 +58,11 @@ xlabel('Time');
 ylabel('Amplitude');
 title('Overall Signal');
 
-%% Finding FFT of signal
 L = length(y);
 n = 2^nextpow2(L);
 
 Y = fft(y,n);
 
-%% Plot the signal in Frequency Domain 
 figure(3)
 f = Fs*(0:(n/2))/n;
 P = abs(Y/n);
@@ -78,7 +72,6 @@ xlabel('Frequency');
 ylabel('Amplitude');
 title('Frequency response of actual signal');
 
-%% Applying LPF to actual signal
 figure(4)
 LPFSignal = filter(40,30,y);
 plot(t, LPFSignal);
@@ -88,7 +81,6 @@ title('LPF Signal');
 
 sound(LPFSignal,Fs)
 
-%% Apply FFT to LPF signal and plot to see the retained frequencies
 figure(5)
 LPFSignalFFT = fft(LPFSignal, n);
 f = Fs*(0:(n/2))/n;
@@ -99,8 +91,6 @@ xlabel('Frequency');
 ylabel('Amplitude');
 title('Low Pass Filtered Signal');
 
-
-%% Applying BPF to actual signal
 figure(6)
 BPFSignal = filter(60,20,y);
 plot(t, BPFSignal);
@@ -110,7 +100,6 @@ title('BPF Signal');
 
 sound(BPFSignal, Fs)
 
-%% Apply FFT to BPF signal and plot to see the retained frequencies
 figure(7)
 BPFSignalFFT = fft(BPFSignal, n);
 f = Fs*(0:(n/2))/n;
@@ -121,8 +110,6 @@ xlabel('Frequency');
 ylabel('Amplitude');
 title('Band Pass Filtered Signal');
 
-
-%% Comparing before and after filtering
 figure(8)
 subplot(3,2,1);
 plot(t, y);
@@ -159,4 +146,5 @@ plot(f,AmpOfBPFSignal);
 xlabel('Frequency');
 ylabel('Amplitude');
 title('Band Pass Filtered Signal in Frequency Domain');
+
 
